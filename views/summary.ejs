@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <title>Summary</title>
+    <style>
+        .back-to-button {
+            margin-bottom: 20px;
+            background-color: #333;
+            color: white;
+            border-radius: 30px;
+            padding: 5px 10px;
+            font-size: 18px;
+            text-decoration: none;
+        }
+        .back-to-button:hover {
+            background-color: white;
+            color: #333;
+            border: 2px solid #333;
+        }
+        .feedback {
+            margin-top: 20px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .feedback.good {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .feedback.warning {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .feedback.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <%- include('../partials/navbar') %>
+    <div class="container mt-4">
+        <h2 class="text-center">Nutritional Summary</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Total Calories</th>
+                    <th>Total Protein</th>
+                    <th>Total Fats</th>
+                    <th>Total Carbs</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><%= totalCalories %></td>
+                    <td><%= totalProtein %></td>
+                    <td><%= totalFats %></td>
+                    <td><%= totalCarbs %></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <!-- Feedback Section -->
+        <div class="feedback">
+            <h4>Feedback</h4>
+            <% 
+                const bmiValue = parseFloat(bmi);
+                const calorieRange = { min: 1800, max: 2500 }; 
+                const proteinRange = { min: 50, max: 100 };
+                const fatsRange = { min: 20, max: 70 };
+                const carbsRange = { min: 150, max: 300 };
+
+                const calorieFeedback = (totalCalories < calorieRange.min) ? 
+                    'Your calorie intake is low. Consider increasing your food intake to meet your energy needs.' :
+                    (totalCalories > calorieRange.max) ?
+                    'Your calorie intake is high. Be mindful of portion sizes to maintain a healthy weight.' :
+                    'Your calorie intake is within the recommended range. Good job maintaining a balanced diet!';
+
+                const proteinFeedback = (totalProtein < proteinRange.min) ? 
+                    'Your protein intake is low. Consume more protein to support muscle growth and overall health.' :
+                    (totalProtein > proteinRange.max) ?
+                    'Your protein intake is high. Having protein is a good way to gain muscle, but balance is key.' :
+                    'Your protein intake is good. Keep up the balanced diet!';
+                
+                const fatsFeedback = (totalFats < fatsRange.min) ?
+                    'Your fat intake is low. Include some healthy fats in your diet for overall health.' :
+                    (totalFats > fatsRange.max) ?
+                    'Your fat intake is high. Try to balance it with healthier fat sources.' :
+                    'Your fat intake is within the healthy range. Good job!';
+
+                const carbsFeedback = (totalCarbs < carbsRange.min) ?
+                    'Your carbohydrate intake is low. Carbs are important for energy; consider adding more carbs.' :
+                    (totalCarbs > carbsRange.max) ?
+                    'Your carbohydrate intake is high. Be mindful of balancing your carbs with other nutrients.' :
+                    'Your carbohydrate intake is appropriate. Keep up the balanced diet!';
+            %>
+
+            <p><strong>Calories:</strong> <%= calorieFeedback %></p>
+            <p><strong>Protein:</strong> <%= proteinFeedback %></p>
+            <p><strong>Fats:</strong> <%= fatsFeedback %></p>
+            <p><strong>Carbohydrates:</strong> <%= carbsFeedback %></p>
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="/analysis" class="back-to-button">Back to Analysis</a>
+        </div>
+    </div>
+</body>
+</html>
